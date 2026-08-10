@@ -1,0 +1,22 @@
+[build-system]
+requires = ["setuptools>=68"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "airdrop-agent-engine"
+version = "0.1.0"
+description = "Safety-gated airdrop/points scout and dry-run preflight engine"
+requires-python = ">=3.11"
+dependencies = []
+
+[project.optional-dependencies]
+dev = ["pytest>=8,<9"]
+
+[project.scripts]
+airdrop-agent = "airdrop_agent.cli:main"
+
+[tool.setuptools.packages.find]
+include = ["airdrop_agent*"]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
