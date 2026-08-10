@@ -1,0 +1,91 @@
+[
+  {
+    "id": "pacifica",
+    "name": "Pacifica API Points Trader",
+    "priority": "S",
+    "mode": "DRY_RUN",
+    "enabled": true,
+    "objective": "Verify that genuine organic API trading remains points-eligible; never manufacture volume.",
+    "sources": [
+      "https://docs.pacifica.fi/points-program",
+      "https://app.pacifica.fi/term",
+      "https://docs.pacifica.fi/api-documentation/api/rate-limits/api-config-keys"
+    ],
+    "probe_urls": ["https://docs.pacifica.fi/api-documentation/api/websocket/subscriptions/orderbook"],
+    "required_markers": ["organic trading activities", "gui or api"],
+    "block_markers": ["points program ended", "program has ended", "api activity is not eligible"],
+    "api_eligibility": "OFFICIAL_DOCS_SIGNAL_API_ELIGIBLE",
+    "japan_status": "LEGAL_REVIEW_REQUIRED"
+  },
+  {
+    "id": "hibachi",
+    "name": "Hibachi API Points Trader",
+    "priority": "S",
+    "mode": "DRY_RUN",
+    "enabled": true,
+    "objective": "Verify official UI/API reward parity and monitor genuine activity rules; no wash or multi-account farming.",
+    "sources": [
+      "https://docs.hibachi.xyz/faq",
+      "https://docs.hibachi.xyz/hibachi-rewards/hibachi-points",
+      "https://docs.hibachi.xyz/hibachi-docs/api-and-developer-tools"
+    ],
+    "probe_urls": ["https://docs.hibachi.xyz/hibachi-docs/trading/limits"],
+    "required_markers": ["ui trading and api trading", "regardless of how you trade"],
+    "block_markers": ["points program ended", "api trading is not eligible", "api trading no longer"],
+    "api_eligibility": "OFFICIAL_DOCS_SIGNAL_UI_API_SAME",
+    "japan_status": "LEGAL_REVIEW_REQUIRED"
+  },
+  {
+    "id": "kyan",
+    "name": "Kyan Krystals Agent",
+    "priority": "S",
+    "mode": "DRY_RUN",
+    "enabled": true,
+    "objective": "Verify current Krystals rules and Kyan MCP/API availability; simulation only.",
+    "sources": [
+      "https://docs.kyan.blue/docs/mcp",
+      "https://blog.kyan.blue/p/built-from-kyanite-introducing-krystals",
+      "https://docs.kyan.blue/"
+    ],
+    "probe_urls": ["https://sandbox.kyan.sh/api/v1/exchange_info"],
+    "required_markers": ["mcp server", "krystals", "trade"],
+    "block_markers": ["krystals program ended", "competition has ended", "rewards ended"],
+    "api_eligibility": "MCP_AVAILABLE_REWARD_ELIGIBILITY_RECHECK_REQUIRED",
+    "japan_status": "LEGAL_REVIEW_REQUIRED"
+  },
+  {
+    "id": "lighter",
+    "name": "Lighter Points Trader",
+    "priority": "S",
+    "mode": "DRY_RUN",
+    "enabled": true,
+    "objective": "Verify that an active points program still rewards organic API trading and fail closed on season conflicts.",
+    "sources": [
+      "https://docs.lighter.xyz/points-program",
+      "https://docs.lighter.xyz/points-program/retail",
+      "https://docs.lighter.xyz/points-program/market-makers",
+      "https://lighter.xyz/terms"
+    ],
+    "probe_urls": ["https://mainnet.zklighter.elliot.ai/api/v1/orderBooks"],
+    "required_markers": ["organic trading strategies via ui and api"],
+    "block_markers": ["points season 2 ended", "points program ended", "season 2 ended"],
+    "api_eligibility": "OFFICIAL_DOCS_SIGNAL_API_ELIGIBLE_BUT_SEASON_CONFLICT_CHECK_REQUIRED",
+    "japan_status": "LEGAL_REVIEW_REQUIRED"
+  },
+  {"id":"okx-ai","name":"OKX.AI Airdrop Hunter Scout","priority":"A","mode":"SCOUT","enabled":false,"objective":"Discover candidates; official-source verification required."},
+  {"id":"hyprearn","name":"HyprEarn Multi-DEX Points Vault","priority":"B","mode":"READ_ONLY","enabled":false,"objective":"Compare vault rewards, fees, lockups and contract risk."},
+  {"id":"standx-maker","name":"StandX Community Maker Yield Bot","priority":"A","mode":"DRY_RUN","enabled":false,"objective":"Evaluate genuine two-sided liquidity economics."},
+  {"id":"standx-position","name":"StandX Position Yield Agent","priority":"B","mode":"READ_ONLY","enabled":false,"objective":"Monitor eligible position yield and net carry."},
+  {"id":"decibel-trading","name":"Decibel Trading Amps Agent","priority":"S","mode":"DRY_RUN","enabled":false,"objective":"Verify Amps eligibility for genuine API/SDK trades."},
+  {"id":"decibel-liquidity","name":"Decibel Liquidity Amps Agent","priority":"A","mode":"READ_ONLY","enabled":false,"objective":"Evaluate liquidity rewards and LP risk."},
+  {"id":"grvt","name":"GRVT API Rewards Agent","priority":"S","mode":"DRY_RUN","enabled":false,"objective":"Verify current points season and API weighting."},
+  {"id":"reya-trading","name":"Reya RCP API Trading Agent","priority":"S","mode":"DRY_RUN","enabled":false,"objective":"Verify RCP rules and calculate direct costs."},
+  {"id":"reya-staking","name":"Reya Staking/RLP Agent","priority":"A","mode":"READ_ONLY","enabled":false,"objective":"Evaluate staking/RLP rewards and risks."},
+  {"id":"extended-trading","name":"Extended Trading Points Agent","priority":"A","mode":"DRY_RUN","enabled":false,"objective":"Verify organic API trading eligibility."},
+  {"id":"extended-liquidity","name":"Extended Liquidity/Vault Agent","priority":"A","mode":"READ_ONLY","enabled":false,"objective":"Evaluate eligible liquidity/vault activities."},
+  {"id":"nado-trading","name":"Nado Trading Points Agent","priority":"S","mode":"DRY_RUN","enabled":false,"objective":"Verify REST/WebSocket points eligibility."},
+  {"id":"nado-nlp","name":"Nado NLP Liquidity Agent","priority":"A","mode":"READ_ONLY","enabled":false,"objective":"Evaluate NLP points and LP risk."},
+  {"id":"ethereal-trading","name":"Ethereal API Points Trader","priority":"S","mode":"DRY_RUN","enabled":false,"objective":"Verify authentic API/SDK trading points."},
+  {"id":"ethereal-margin","name":"Ethereal USDe/Margin Agent","priority":"A","mode":"READ_ONLY","enabled":false,"objective":"Evaluate deposit/margin rewards and risks."},
+  {"id":"01exchange","name":"01 Exchange Participation Agent","priority":"C","mode":"DRY_RUN","enabled":false,"objective":"Verify whether the participation program remains live."}
+]
