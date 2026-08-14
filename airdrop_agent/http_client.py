@@ -1,44 +1,19 @@
 from __future__ import annotations
-
-import html
-import re
-from urllib.error import HTTPError, URLError
-from urllib.request import Request, urlopen
-
+import urllib.error
+import urllib.request
+from urllib.parse import urlparse
 from .models import FetchResult
 
-_TAG_RE = re.compile(r"<[^>]+>")
-_SPACE_RE = re.compile(r"\s+")
-
-
-class UrlReader:
-    def __init__(self, timeout: float = 15.0) -> None:
-        self.timeout = timeout
-
-    def fetch(self, url: str) -> FetchResult:
-        req = Request(
-            url,
-            headers={
-                "User-Agent": "airdrop-agent-engine/0.1 (+read-only preflight)",
-                "Accept": "text/html,application/json,text/plain;q=0.9,*/*;q=0.8",
-            },
-        )
+class PublicGetClient:
+    """Public HTTPS GET-only client; there is no order/transaction submission method."""
+    def __init__(self, timeout: float = 8.0, max_bytes: int = 512_000): self.timeout, self.max_bytes = timeout, max_bytes
+    def get(self, url: str) -> FetchResult:
+        if urlparse(url).scheme != "https": return FetchResult(url=url, ok=False, status_code=None, error="only_https_allowed")
+        request = urllib.request.Request(url, headers={"User-Agent":"airdrop-agent-engine/0.2 public-read-only"}, method="GET")
         try:
-            with urlopen(req, timeout=self.timeout) as response:
-                raw = response.read(2_000_000)
-                charset = response.headers.get_content_charset() or "utf-8"
-                text = raw.decode(charset, errors="replace")
-                cleaned = self._normalize(text)
-                return FetchResult(url, True, response.status, cleaned)
-        except HTTPError as exc:
-            return FetchResult(url, False, exc.code, error=f"HTTPError: {exc.reason}")
-        except URLError as exc:
-            return FetchResult(url, False, None, error=f"URLError: {exc.reason}")
-        except Exception as exc:  # defensive: the runner must fail closed
-            return FetchResult(url, False, None, error=f"{type(exc).__name__}: {exc}")
-
-    @staticmethod
-    def _normalize(text: str) -> str:
-        text = _TAG_RE.sub(" ", text)
-        text = html.unescape(text)
-        return _SPACE_RE.sub(" ", text).strip()
+            with urllib.request.urlopen(request, timeout=self.timeout) as response:
+                body=response.read(self.max_bytes); charset=response.headers.get_content_charset() or "utf-8"; code=int(response.status)
+                return FetchResult(url=url, ok=200 <= code < 400, status_code=code, text=body.decode(charset, errors="replace"))
+        except urllib.error.HTTPError as exc: return FetchResult(url=url, ok=False, status_code=exc.code, error=f"http_{exc.code}")
+        except (urllib.error.URLError, TimeoutError, OSError) as exc: return FetchResult(url=url, ok=False, status_code=None, error=type(exc).__name__)
+UrlReader = PublicGetClient
