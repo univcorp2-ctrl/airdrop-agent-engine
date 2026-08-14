@@ -1,44 +1,55 @@
 # Airdrop Agent Engine
 
-A safety-gated engine for continuously monitoring crypto points/rewards/airdrop candidates against current official sources.
+A safety-gated research, READ_ONLY monitoring and DRY_RUN preparation engine for 20 crypto airdrop / points / XP / rewards targets. Residence defaults to Japan; legal eligibility is fail-closed.
 
-## Current scope
+## Safety invariants
 
-The first four adapters are enabled: Pacifica, Hibachi, Kyan and Lighter. Sixteen additional targets are registered as disabled placeholders so they can be added without changing the core architecture.
+- **No live order or transaction submission implementation exists in v1.** `execute()` hard-fails and `LIVE_TRADING_COMPILED=false`.
+- Deposits, withdrawals, bridges, new contract approvals, unknown wallet signatures, signer changes and risk-limit increases are Human Gates.
+- Sybil farming, self/wash/circular trading, fake liquidity, manipulation, quote stuffing, KYC/bot/anti-Sybil/geo-restriction evasion are blocked by policy.
+- Point/token future monetary value is `UNKNOWN` unless officially guaranteed.
+- API/SDK/MCP existence is never treated as reward eligibility. A target is only marked `api_reward_eligible=true` when a current official Program/FAQ explicitly connects API-originated activity to rewards.
+- Japan not appearing in a prohibited-country list does **not** produce legal PASS.
 
-The scheduled GitHub Actions job runs every 6 hours. Each run:
+## Current highlights — verified 2026-08-14
 
-1. fetches current official points/rewards/API/Terms pages,
-2. checks required eligibility markers and stop markers,
-3. probes a public API/MCP or official developer endpoint,
-4. fails closed on conflicting program signals or source failures,
-5. records JSON evidence as a GitHub Actions artifact.
+- Pacifica — `READY_DRY_RUN`: official points rules explicitly include organic GUI/API trading.
+- Hibachi — `READY_DRY_RUN`: official FAQ states points use the same activity formula regardless of UI/API path.
+- GRVT — `READY_DRY_RUN`: Rewards Season 2.0 explicitly awards API trades, but UI trades earn more points.
+- Kyan — `UNVERIFIED`: current MCP/API and Krystals-from-own-trading are official; explicit API-originated Krystals eligibility was not located.
+- Lighter — `INACTIVE`: official Points Season 2 ended 2025-12-26.
+- All targets remain `LEGAL_REVIEW_REQUIRED` for Japan and therefore cannot become LIVE.
 
-## Safety boundary
+The remaining programs are represented by fail-closed adapters. Current program signals are recorded for StandX, Decibel, Reya, Extended, Nado, Ethereal, HyprEarn, OKX.AI and 01 Exchange without incorrectly promoting API reward eligibility.
 
-This repository is deliberately **DRY_RUN only**. The compiled build contains no implementation that can submit an order, deposit, withdrawal, bridge, wallet signature, contract approval or asset transfer. Setting an environment variable cannot turn live trading on.
-
-Japan-resident eligibility is also fail-closed as `LEGAL_REVIEW_REQUIRED`. Absence of Japan from a prohibited-jurisdiction list is not treated as affirmative permission to use an offshore derivatives service.
-
-## Run locally
+## Install / test
 
 ```bash
 python -m pip install -e ".[dev]"
 pytest -q
-python -m airdrop_agent.cli run --output-dir artifacts
+RUN_PUBLIC_GET_TESTS=1 pytest -q -m network
 ```
 
-The latest machine-readable result is written to `artifacts/latest.json`.
+## CLI
 
-## Adding another adapter
+```bash
+airdrop-agent doctor
+airdrop-agent doctor --network
+airdrop-agent scout
+airdrop-agent status
+airdrop-agent run --target pacifica --mode dry-run
+airdrop-agent run --target hibachi --mode dry-run
+airdrop-agent run --target kyan --mode dry-run
+airdrop-agent run --target lighter --mode dry-run
+airdrop-agent run-all --mode dry-run
+airdrop-agent report --format markdown
+airdrop-agent dashboard --host 127.0.0.1 --port 8765
+```
 
-Add official source URLs and conservative markers to `config/targets.json`, implement a small adapter under `airdrop_agent/adapters/`, register it in `airdrop_agent/runner.py`, and add tests. Do not add authenticated financial actions to the scheduled workflow.
+For backward compatibility, `airdrop-agent run` without `--target` runs only `enabled=true` targets. `run-all --mode dry-run` respects each target's configured mode ceiling, so SCOUT remains SCOUT and READ_ONLY remains READ_ONLY.
 
-## Official sources currently monitored
+## Outputs
 
-- Pacifica points, Terms, and API documentation
-- Hibachi FAQ, Points, and API/developer documentation
-- Kyan MCP/developer documentation and Krystals announcement
-- Lighter Points documentation, market-maker/retail pages, Terms, and public orderBooks API
+`artifacts/latest.json` is the latest machine-readable state. Runs also produce `artifacts/logs/runs.jsonl`, `artifacts/report.md`, and `artifacts/report.html`. Credential values are never written; `doctor` reports presence booleans only.
 
-Rewards have unknown future value. The engine does not assign a speculative dollar value to points or airdrop eligibility.
+See `SECURITY.md`, `RUNBOOK.md`, `IMPLEMENTATION_STATUS.md`, and `RESEARCH_MATRIX.md`.
