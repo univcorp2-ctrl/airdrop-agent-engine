@@ -1,0 +1,14 @@
+{
+  "verified_at":"2026-08-14",
+  "residence_assumption":"JP",
+  "future_token_value":"UNKNOWN",
+  "strict_rule":"API availability does not imply API reward eligibility",
+  "explicit_api_reward_eligible":["pacifica","hibachi","grvt"],
+  "wave1":{
+    "pacifica":{"program_status":"ACTIVE","api_reward_eligible":true,"legal_status":"LEGAL_REVIEW_REQUIRED","sources":["https://docs.pacifica.fi/programs/points-program","https://docs.pacifica.fi/api-documentation/api/rate-limits/api-config-keys","https://app.pacifica.fi/term"]},
+    "hibachi":{"program_status":"ACTIVE","api_reward_eligible":true,"legal_status":"LEGAL_REVIEW_REQUIRED","sources":["https://docs.hibachi.xyz/hibachi-rewards/points","https://docs.hibachi.xyz/faq","https://hibachi.xyz/terms"]},
+    "kyan":{"program_status":"ACTIVE","api_reward_eligible":null,"legal_status":"LEGAL_REVIEW_REQUIRED","sources":["https://docs.kyan.blue/docs/mcp","https://blog.kyan.blue/p/development-update-referrals-rewards-hub-and-more","https://docs.kyan.blue/reference/getexchangeinfo"]},
+    "lighter":{"program_status":"INACTIVE","api_reward_eligible":false,"legal_status":"LEGAL_REVIEW_REQUIRED","sources":["https://docs.lighter.xyz/points-program","https://docs.lighter.xyz/points-program/market-makers","https://lighter.xyz/terms"]}
+  },
+  "additional_verified":{"grvt":{"program_status":"ACTIVE","api_reward_eligible":true,"rule":"UI-based trades earn more points than API-based trades","source":"https://help.grvt.io/en/articles/12332040-live-rewards-season-2-0"},"standx":{"maker_program":"ACTIVE","api_reward_eligible":null,"source":"https://docs.standx.com/sip/sip-5a-community-maker-yield"},"decibel":{"amps_season":"ACTIVE","api_reward_eligible":null,"source":"https://docs.decibel.trade/rewards/amps"},"nado":{"season":"ACTIVE","api_reward_eligible":null,"source":"https://docs.nado.xyz/points/season-2-live"},"ethereal":{"points":"ACTIVE","api_reward_eligible":null,"source":"https://docs.ethereal.trade/points/ethereal-points"},"exchange01":{"api_available":true,"points_status":"UNVERIFIED","source":"https://docs.01.xyz/reference/rest-api"}}
+}
