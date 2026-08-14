@@ -1,0 +1,25 @@
+execution:
+  default_mode: DRY_RUN
+  live_compiled: false
+  simulated_notional_usd: 100
+risk:
+  max_capital_usd: 0
+  max_notional_usd: 0
+  max_daily_loss_usd: 0
+  max_daily_fees_usd: 0
+  max_leverage: 1
+  max_open_positions: 0
+  max_api_errors: 3
+  max_data_age_seconds: 120
+legal:
+  residence: JP
+  fail_closed: true
+scheduler:
+  allow:
+    - program_status
+    - terms_status
+    - api_status
+    - points_status
+    - market_data
+    - dry_run
+  live_trading: false
