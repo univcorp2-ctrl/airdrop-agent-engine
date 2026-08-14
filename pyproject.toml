@@ -4,8 +4,8 @@ build-backend = "setuptools.build_meta"
 
 [project]
 name = "airdrop-agent-engine"
-version = "0.1.0"
-description = "Safety-gated airdrop/points scout and dry-run preflight engine"
+version = "0.2.0"
+description = "Safety-gated crypto rewards scout, read-only monitor and dry-run engine"
 requires-python = ">=3.11"
 dependencies = []
 
@@ -20,3 +20,4 @@ include = ["airdrop_agent*"]
 
 [tool.pytest.ini_options]
 testpaths = ["tests"]
+markers = ["network: public HTTPS GET checks only"]
